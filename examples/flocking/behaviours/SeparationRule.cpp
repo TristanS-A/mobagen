@@ -2,10 +2,11 @@
 #include "../gameobjects/Boid.h"
 #include "../gameobjects/World.h"
 #include "engine/Engine.h"
+#include <iostream>
 
 Vector2f SeparationRule::computeForce(const std::vector<Boid*>& neighborhood, Boid* boid) {
   // Try to avoid boids too close
-  Vector2f separatingForce = Vector2f::zero();
+  //Vector2f separatingForce = Vector2f::zero();
 
   //    float desiredDistance = desiredMinimalDistance;
   //
@@ -16,9 +17,36 @@ Vector2f SeparationRule::computeForce(const std::vector<Boid*>& neighborhood, Bo
   //        // todo: find and apply force only on the closest mates
   //    }
 
-  separatingForce = Vector2f::normalized(separatingForce);
+  //separatingForce = Vector2f::normalized(separatingForce);
 
-  return separatingForce;
+  //return separatingForce;
+
+  if (neighborhood.empty()) {
+    return Vector2f::zero();
+  }
+
+  Vector2f seperationForce = {0,0};
+
+  //Runs through the boids vector to search for boids within the radius
+  for (Boid* b : neighborhood) {
+    if (b != boid) { //Excludes the agent's self
+      const double distenceToBoid = (boid->getPosition() - b->getPosition()).getMagnitude();
+      if (distenceToBoid <= boid->getDetectionRadius()) {
+        Vector2f otherBoidToAgentVector = boid->getPosition() - b->getPosition();
+
+        seperationForce += otherBoidToAgentVector.normalized() / otherBoidToAgentVector.getMagnitude();
+      }
+    }
+  }
+
+  //std::cout << "seperation " << seperationForce.x << " " << seperationForce.y << " " << desiredMinimalDistance << std::endl;
+
+  //Scales seperation for to max force times k if larger than maxForce
+  if (seperationForce.getMagnitude() > desiredMinimalDistance) {
+    return seperationForce.normalized() * desiredMinimalDistance * getBaseWeightMultiplier();
+  }
+
+  return seperationForce * getBaseWeightMultiplier();
 }
 
 bool SeparationRule::drawImguiRuleExtra() {

@@ -2,12 +2,33 @@
 #include "../gameobjects/Boid.h"
 
 Vector2f CohesionRule::computeForce(const std::vector<Boid*>& neighborhood, Boid* boid) {
-  Vector2f cohesionForce;
+  if (!neighborhood.empty()) {
+    Vector2f centerOfMass = {0,0};
+    int numberOfBoidsInRadius = 0;
 
-  // todo: add your code here to make a force towards the center of mass
-  // hint: iterate over the neighborhood
+    //Runs through the boids vector to search for boids within the radius
+    for (Boid* b : neighborhood) {
+      const double distenceToBoid = (b->getPosition() - boid->getPosition()).getMagnitude();
+      if (distenceToBoid <= boid->getDetectionRadius() && b != boid) { //Checks if distance is under radius and excludes self
 
-  // find center of mass
+        //Adds position of mass and increments boids within the radius found
+        centerOfMass += b->getPosition();
+        numberOfBoidsInRadius++;
+      }
+    }
 
-  return cohesionForce;
+    //Calculates accurate center of mass
+    centerOfMass /= numberOfBoidsInRadius;
+
+    //Finds vector to center of mass from agent
+    Vector2f agentDirection = centerOfMass - boid->getPosition();
+
+    //std::cout << "cohetion " << (agentDirection / radius).x * k << " " << (agentDirection / radius).y * k << endl;
+    //make sure that center of mass is in radius
+    if (agentDirection.getMagnitude() <= boid->getDetectionRadius()) {
+      return (agentDirection / boid->getDetectionRadius()) * getBaseWeightMultiplier();
+    }
+  }
+
+  return {0, 0};
 }
