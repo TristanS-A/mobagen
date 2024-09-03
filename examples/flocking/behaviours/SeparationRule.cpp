@@ -31,7 +31,7 @@ Vector2f SeparationRule::computeForce(const std::vector<Boid*>& neighborhood, Bo
   for (Boid* b : neighborhood) {
     if (b != boid) { //Excludes the agent's self
       const double distenceToBoid = (boid->getPosition() - b->getPosition()).getMagnitude();
-      if (distenceToBoid <= boid->getDetectionRadius()) {
+      if (distenceToBoid <= this->desiredMinimalDistance) {
         Vector2f otherBoidToAgentVector = boid->getPosition() - b->getPosition();
 
         seperationForce += otherBoidToAgentVector.normalized() / otherBoidToAgentVector.getMagnitude();
@@ -39,14 +39,7 @@ Vector2f SeparationRule::computeForce(const std::vector<Boid*>& neighborhood, Bo
     }
   }
 
-  //std::cout << "seperation " << seperationForce.x << " " << seperationForce.y << " " << desiredMinimalDistance << std::endl;
-
-  //Scales seperation for to max force times k if larger than maxForce
-  if (seperationForce.getMagnitude() > desiredMinimalDistance) {
-    return seperationForce.normalized() * desiredMinimalDistance * getBaseWeightMultiplier();
-  }
-
-  return seperationForce * getBaseWeightMultiplier();
+  return seperationForce * weight;
 }
 
 bool SeparationRule::drawImguiRuleExtra() {
