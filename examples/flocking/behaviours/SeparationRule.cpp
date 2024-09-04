@@ -39,7 +39,10 @@ Vector2f SeparationRule::computeForce(const std::vector<Boid*>& neighborhood, Bo
     }
   }
 
-  return seperationForce;
+  //This is to amplify the separation factor to look nice
+  const int additionalMultiplicationFactor = 10;
+
+  return seperationForce * additionalMultiplicationFactor;
 }
 
 bool SeparationRule::drawImguiRuleExtra() {
