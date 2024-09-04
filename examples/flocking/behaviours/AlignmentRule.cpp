@@ -1,5 +1,6 @@
 #include "AlignmentRule.h"
 #include "../gameobjects/Boid.h"
+#include <iostream>
 
 Vector2f AlignmentRule::computeForce(const std::vector<Boid*>& neighborhood, Boid* boid) {
   if (neighborhood.empty()) {
@@ -19,9 +20,8 @@ Vector2f AlignmentRule::computeForce(const std::vector<Boid*>& neighborhood, Boi
     }
   }
 
-  //cout << "alignment" << endl;
   //Calculates accurate average velocity
   avarageVelocity /= numberOfBoidsInRadius;
 
-  return avarageVelocity * weight;
+  return avarageVelocity;
 }

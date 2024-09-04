@@ -34,12 +34,12 @@ Vector2f SeparationRule::computeForce(const std::vector<Boid*>& neighborhood, Bo
       if (distenceToBoid <= desiredMinimalDistance) {
         Vector2f otherBoidToAgentVector = boid->transform.position - b->transform.position;
 
-        seperationForce += otherBoidToAgentVector.normalized() / otherBoidToAgentVector.getMagnitude();
+        seperationForce += otherBoidToAgentVector / otherBoidToAgentVector.sqrMagnitude();
       }
     }
   }
 
-  return seperationForce * weight;
+  return seperationForce;
 }
 
 bool SeparationRule::drawImguiRuleExtra() {

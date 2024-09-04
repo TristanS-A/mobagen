@@ -1,5 +1,6 @@
 #include "CohesionRule.h"
 #include "../gameobjects/Boid.h"
+#include <iostream>
 
 Vector2f CohesionRule::computeForce(const std::vector<Boid*>& neighborhood, Boid* boid) {
   if (!neighborhood.empty()) {
@@ -26,7 +27,7 @@ Vector2f CohesionRule::computeForce(const std::vector<Boid*>& neighborhood, Boid
     //std::cout << "cohetion " << (agentDirection / radius).x * k << " " << (agentDirection / radius).y * k << endl;
     //make sure that center of mass is in radius
     if (agentDirection.getMagnitude() <= boid->getDetectionRadius()) {
-      return (agentDirection / boid->getDetectionRadius()) * weight;
+      return (agentDirection / boid->getDetectionRadius());
     }
   }
 
