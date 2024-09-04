@@ -8,11 +8,11 @@ Vector2f CohesionRule::computeForce(const std::vector<Boid*>& neighborhood, Boid
 
     //Runs through the boids vector to search for boids within the radius
     for (Boid* b : neighborhood) {
-      const double distenceToBoid = (b->getPosition() - boid->getPosition()).getMagnitude();
+      const double distenceToBoid = (b->transform.position - boid->transform.position).getMagnitude();
       if (distenceToBoid <= boid->getDetectionRadius() && b != boid) { //Checks if distance is under radius and excludes self
 
         //Adds position of mass and increments boids within the radius found
-        centerOfMass += b->getPosition();
+        centerOfMass += b->transform.position;
         numberOfBoidsInRadius++;
       }
     }
@@ -21,12 +21,12 @@ Vector2f CohesionRule::computeForce(const std::vector<Boid*>& neighborhood, Boid
     centerOfMass /= numberOfBoidsInRadius;
 
     //Finds vector to center of mass from agent
-    Vector2f agentDirection = centerOfMass - boid->getPosition();
+    Vector2f agentDirection = centerOfMass - boid->transform.position;
 
     //std::cout << "cohetion " << (agentDirection / radius).x * k << " " << (agentDirection / radius).y * k << endl;
     //make sure that center of mass is in radius
     if (agentDirection.getMagnitude() <= boid->getDetectionRadius()) {
-      return (agentDirection / boid->getDetectionRadius()) * getBaseWeightMultiplier();
+      return (agentDirection / boid->getDetectionRadius()) * weight;
     }
   }
 

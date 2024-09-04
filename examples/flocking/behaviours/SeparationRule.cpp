@@ -30,9 +30,9 @@ Vector2f SeparationRule::computeForce(const std::vector<Boid*>& neighborhood, Bo
   //Runs through the boids vector to search for boids within the radius
   for (Boid* b : neighborhood) {
     if (b != boid) { //Excludes the agent's self
-      const double distenceToBoid = (boid->getPosition() - b->getPosition()).getMagnitude();
-      if (distenceToBoid <= this->desiredMinimalDistance) {
-        Vector2f otherBoidToAgentVector = boid->getPosition() - b->getPosition();
+      const double distenceToBoid = (boid->transform.position - b->transform.position).getMagnitude();
+      if (distenceToBoid <= desiredMinimalDistance) {
+        Vector2f otherBoidToAgentVector = boid->transform.position - b->transform.position;
 
         seperationForce += otherBoidToAgentVector.normalized() / otherBoidToAgentVector.getMagnitude();
       }
