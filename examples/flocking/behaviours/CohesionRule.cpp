@@ -24,7 +24,6 @@ Vector2f CohesionRule::computeForce(const std::vector<Boid*>& neighborhood, Boid
     //Finds vector to center of mass from agent
     Vector2f agentDirection = centerOfMass - boid->transform.position;
 
-    //std::cout << "cohetion " << (agentDirection / radius).x * k << " " << (agentDirection / radius).y * k << endl;
     //make sure that center of mass is in radius
     if (agentDirection.getMagnitude() <= boid->getDetectionRadius()) {
       return (agentDirection / boid->getDetectionRadius());
