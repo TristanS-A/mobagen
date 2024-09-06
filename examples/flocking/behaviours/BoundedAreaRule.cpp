@@ -5,41 +5,37 @@
 #include <iostream>
 
 Vector2f BoundedAreaRule::computeForce(const std::vector<Boid*>& neighborhood, Boid* boid) {
-  // Return a force proportional to the proximity of the boids with the bounds, and opposed to it
-  Vector2f force = Vector2f::zero();  // zero
+  Vector2f force = Vector2f::zero();
 
-  // todo: add here your code code here do make the boid follow the bounded box rule
-  // hint: use this->world->engine->window->size() and desiredDistance
+  float lookAheadDistence = 1.0f; //Defines look ahead distence
+  Vector2f lookAheadTarget = boid->getPosition() + boid->velocity.normalized() * lookAheadDistence; //Finds target to check collision with
+  Point2D windowSize = this->world->engine->window->size(); //Gets window size
+  const Vector2f windowPosition = Vector2f::zero(); //Defines window position variable (Avoids magic numbers)
 
-  //Could use dot product, but using position is less process intensive here
-
-  float lookAheadDistence = 1.0f;
-  Vector2f lookAheadTarget = boid->getPosition() + boid->velocity.normalized() * lookAheadDistence;
-  Point2D windowSize = this->world->engine->window->size();
-
+  //Checks all 4 sides of the window borders
   if (lookAheadTarget.y > windowSize.y - desiredDistance) { //Bottom wall
     float distenceToReflect = abs(boid->getPosition().y - windowSize.y);
     Vector2f wallNormal = {0, -1};
 
-    force += wallNormal * distenceToReflect;
+    force += wallNormal * distenceToReflect; //Calculates avoidance force from wallNormal and distance to reflect
   }
-  if (lookAheadTarget.y < 0 + desiredDistance) { //Top wall
+  if (lookAheadTarget.y < windowPosition.y + desiredDistance) { //Top wall
     float distenceToReflect = abs(0 - boid->getPosition().y);
     Vector2f wallNormal = {0, 1};
 
-    force += wallNormal * distenceToReflect;
+    force += wallNormal * distenceToReflect; //Calculates avoidance force from wallNormal and distance to reflect
   }
   if (lookAheadTarget.x > windowSize.x - desiredDistance) { //Right wall
     float distenceToReflect = abs(boid->getPosition().x - windowSize.x);
     Vector2f wallNormal = {-1, 0};
 
-    force += wallNormal * distenceToReflect;
+    force += wallNormal * distenceToReflect; //Calculates avoidance force from wallNormal and distance to reflect
   }
-  if (lookAheadTarget.x < 0 + desiredDistance) { //Right wall
+  if (lookAheadTarget.x < windowPosition.x + desiredDistance) { //Right wall
     float distenceToReflect = abs(0 - boid->getPosition().x);
     Vector2f wallNormal = {1, 0};
 
-    force += wallNormal * desiredDistance;
+    force += wallNormal * distenceToReflect; //Calculates avoidance force from wallNormal and distance to reflect
   }
 
   return force;
