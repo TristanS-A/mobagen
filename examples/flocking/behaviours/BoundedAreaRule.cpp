@@ -13,7 +13,8 @@ Vector2f BoundedAreaRule::computeForce(const std::vector<Boid*>& neighborhood, B
 
   //Could use dot product, but using position is less process intensive here
 
-  Vector2f lookAheadTarget = boid->getPosition() + boid->velocity.normalized();
+  float lookAheadDistence = 1.0f;
+  Vector2f lookAheadTarget = boid->getPosition() + boid->velocity.normalized() * lookAheadDistence;
   Point2D windowSize = this->world->engine->window->size();
 
   if (lookAheadTarget.y > windowSize.y - desiredDistance) { //Bottom wall

@@ -31,15 +31,13 @@ Vector2f SeparationRule::computeForce(const std::vector<Boid*>& neighborhood, Bo
   for (Boid* b : neighborhood) {
     if (b != boid) { //Excludes the agent's self
       const double distenceToBoid = (boid->transform.position - b->transform.position).getMagnitude();
-      if (distenceToBoid <= desiredMinimalDistance) {
+      if (distenceToBoid <= desiredMaximalDistance) {
         Vector2f otherBoidToAgentVector = boid->transform.position - b->transform.position;
 
-        seperationForce += otherBoidToAgentVector / otherBoidToAgentVector.sqrMagnitude();
+        seperationForce += desiredMinimalDistance * otherBoidToAgentVector / otherBoidToAgentVector.sqrMagnitude(); // Multiplies by smallDistence / bigDistence instead of 1 / distence
       }
     }
   }
-
-  //This is to amplify the separation factor to look nice
 
   return seperationForce;
 }

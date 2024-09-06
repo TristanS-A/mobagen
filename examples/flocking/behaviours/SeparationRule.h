@@ -7,6 +7,7 @@
 class SeparationRule : public FlockingRule {
 private:
   float desiredMinimalDistance = 10;
+  float desiredMaximalDistance = 20;
 
 public:
   explicit SeparationRule(World* pWorld, float desiredSeparation = 20., float weight = 1., bool isEnabled = true)
