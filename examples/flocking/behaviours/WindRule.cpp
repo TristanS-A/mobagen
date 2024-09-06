@@ -7,7 +7,7 @@
 
 Vector2f WindRule::computeForce(const std::vector<Boid*>& neighborhood, Boid* boid) {
   Vector2f force = Vector2f(cos(windAngle), sin(windAngle)); //Calculates wind force vector
-
+  std::cout << counterClockwise << std::endl;
   return force;
 }
 
@@ -16,6 +16,10 @@ bool WindRule::drawImguiRuleExtra() {
   bool valueHasChanged = false;
 
   if (ImGui::SliderAngle("Wind Direction", &windAngle, 0)) {
+    valueHasChanged = true;
+  }
+
+  if (ImGui::Checkbox("Circle Clockwise", &counterClockwise)) {
     valueHasChanged = true;
   }
 

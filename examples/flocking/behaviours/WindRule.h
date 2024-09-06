@@ -6,6 +6,7 @@
 class WindRule : public FlockingRule {
 private:
   float windAngle;
+  bool counterClockwise = false;
 
 public:
   explicit WindRule(World* pWorld, float weight = 1., float angle = 0, bool isEnabled = true)

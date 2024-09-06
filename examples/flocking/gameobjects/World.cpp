@@ -8,6 +8,7 @@
 #include "../behaviours/AlignmentRule.h"
 #include "../behaviours/MouseInfluenceRule.h"
 #include "../behaviours/BoundedAreaRule.h"
+#include "../behaviours/CircleRule.h"
 #include "../behaviours/WindRule.h"
 #include "engine/Engine.h"
 
@@ -32,6 +33,8 @@ void World::initializeRules() {
   boidsRules.emplace_back(std::make_unique<BoundedAreaRule>(this, 20, 8.f, false));
   // parameters: weight, angle
   boidsRules.emplace_back(std::make_unique<WindRule>(this, 1.f, 6.f, false));
+  // parameters: weight
+  boidsRules.emplace_back(std::make_unique<CircleRule>(this, 150.f, false));
 
   // Starting weights are saved as defaults
   defaultWeights.clear();
