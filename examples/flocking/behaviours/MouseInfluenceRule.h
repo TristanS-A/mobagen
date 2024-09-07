@@ -7,12 +7,13 @@ class MouseInfluenceRule : public FlockingRule {
 private:
   // If not avoiding, is attracted
   bool isRepulsive;
+  float distance = 500; //Mouse effect radius
 
 public:
   explicit MouseInfluenceRule(World* pWorld, float weight = 1., bool isRepulsive_ = false, bool isEnabled = true)
       : FlockingRule(pWorld, Color::Magenta, weight, isEnabled), isRepulsive(isRepulsive_) {}
 
-  MouseInfluenceRule(const MouseInfluenceRule& toCopy) : FlockingRule(toCopy) { isRepulsive = toCopy.isRepulsive; }
+  MouseInfluenceRule(const MouseInfluenceRule& toCopy) : FlockingRule(toCopy) { isRepulsive = toCopy.isRepulsive; distance = toCopy.distance; }
 
   std::unique_ptr<FlockingRule> clone() override { return std::make_unique<MouseInfluenceRule>(*this); }
 

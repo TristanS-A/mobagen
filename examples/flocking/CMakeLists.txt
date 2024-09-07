@@ -30,7 +30,9 @@ install(FILES ${FLOCKING_INC} DESTINATION include/flocking)
 
 add_executable(flocking ${FLOCKING_SRC} ${FLOCKING_INC}
         behaviours/CircleRule.cpp
-        behaviours/CircleRule.h)
+        behaviours/CircleRule.h
+        behaviours/CongaLineRule.cpp
+        behaviours/CongaLineRule.h)
 
 target_include_directories(flocking PUBLIC ${SDL2_INCLUDE_DIR} ${CORE_INC_DIR})
 target_link_libraries(flocking PUBLIC SDL2-static IMGUI core)

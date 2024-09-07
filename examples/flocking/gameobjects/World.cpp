@@ -9,6 +9,7 @@
 #include "../behaviours/MouseInfluenceRule.h"
 #include "../behaviours/BoundedAreaRule.h"
 #include "../behaviours/CircleRule.h"
+#include "../behaviours/CongaLineRule.h"
 #include "../behaviours/WindRule.h"
 #include "engine/Engine.h"
 
@@ -35,6 +36,8 @@ void World::initializeRules() {
   boidsRules.emplace_back(std::make_unique<WindRule>(this, 1.f, 6.f, false));
   // parameters: weight
   boidsRules.emplace_back(std::make_unique<CircleRule>(this, 150.f, false));
+  // parameters: weight
+  boidsRules.emplace_back(std::make_unique<CongaLineRule>(this, 10.f, CongaLineActive));
 
   // Starting weights are saved as defaults
   defaultWeights.clear();
@@ -121,6 +124,7 @@ void World::drawGeneralUI() {
   if (ImGui::CollapsingHeader("General")) {
     if (ImGui::DragInt("Number of Boids", &nbBoids)) {
       if (nbBoids < 0) nbBoids = 0;
+      boidSlots.clear();
       setNumberOfBoids(nbBoids);
     }
 

@@ -49,6 +49,11 @@ public:
   // cached list to manipulate objects
   std::vector<Boid*> boids;
 
+  //Slots for Conga Line Rule
+  std::vector<Boid*> boidSlots;
+
+  bool CongaLineActive = false; //Keeps track of iff Conga line is enabled to make it easy to control the leader
+
   /// METHODS
   explicit World(Engine* pEngine);
 

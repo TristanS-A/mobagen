@@ -4,12 +4,17 @@
 #include "engine/Engine.h"
 
 Vector2f MouseInfluenceRule::computeForce(const std::vector<Boid*>& neighborhood, Boid* boid) {
+
+  //Doesn't effect anyone but the leader of Conga line if active
+  if (world->CongaLineActive && world->boidSlots.size() != 0 && boid != world->boidSlots[0]) {
+    return Vector2f::zero();
+  }
+
   ImGui::SetCurrentContext(world->engine->window->imGuiContext);
       ImGuiIO& io = ImGui::GetIO();
       if (ImGui::IsMousePosValid() && io.MouseDown[0]) {
           Vector2f mousePos(io.MousePos.x, io.MousePos.y);
           Vector2f displacement = {2000, 2000}; //Sets displacement
-          float distance = 500; //Sets mouse interaction radius distance
 
           Vector2f force = Vector2f::zero();
 
@@ -42,6 +47,10 @@ bool MouseInfluenceRule::drawImguiRuleExtra() {
   ImGui::SameLine();
   if (ImGui::RadioButton("Repulsive", isRepulsive)) {
     isRepulsive = true;
+    valueHasChanged = true;
+  }
+
+  if (ImGui::InputFloat("Mouse Effect Radius", &distance)) {
     valueHasChanged = true;
   }
 
