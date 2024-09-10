@@ -37,7 +37,7 @@ void World::initializeRules() {
   // parameters: weight
   boidsRules.emplace_back(std::make_unique<CircleRule>(this, 150.f, false));
   // parameters: weight
-  boidsRules.emplace_back(std::make_unique<CongaLineRule>(this, 10.f, CongaLineActive));
+  boidsRules.emplace_back(std::make_unique<CongaLineRule>(this, 500.f, CongaLineActive));
 
   // Starting weights are saved as defaults
   defaultWeights.clear();

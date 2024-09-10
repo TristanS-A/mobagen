@@ -66,8 +66,6 @@ bool CongaLineRule::drawImguiRuleExtra() {
     valueHasChanged = true;
   }
 
-  world->CongaLineActive = this->isEnabled; //Updates world Conga line bool
-
   return valueHasChanged;
 }
 

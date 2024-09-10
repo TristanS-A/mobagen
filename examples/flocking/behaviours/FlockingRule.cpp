@@ -31,6 +31,13 @@ bool FlockingRule::drawImguiRule() {
     ImguiTooltip(getRuleExplanation());
 
     if (ImGui::Checkbox("Enabled", &isEnabled)) {
+
+      world->CongaLineActive = this->isEnabled; //Updates world Conga line bool
+
+      if (this->isEnabled) {
+        world->boidSlots.clear();
+      }
+
       valueHasChanged = true;
     }
 
