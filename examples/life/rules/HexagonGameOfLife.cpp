@@ -6,23 +6,24 @@
 #include <iostream>
 
 void HexagonGameOfLife::Step(World& world) {
+  //Iterates over the whole grid
   for (int i = 0; i < world.SideSize(); i++) {
     for (int j = 0; j < world.SideSize(); j++) {
-      const bool currSpace = world.Get({i, j});
-      const int liveNeighborCount = CountNeighbors(world, {i, j});
-      if (currSpace) {
-        if (liveNeighborCount < 2) {
+      const bool currSpace = world.Get({i, j}); //Gets the current space state
+      const int liveNeighborCount = CountNeighbors(world, {i, j}); //Gets the live neighbor count of that point
+      if (currSpace) { //Conditions for if the currSpace state is alive
+        if (liveNeighborCount < 2) { //Rule for killing space due to underpopulation
           world.SetNext({i, j}, false);
         }
-        else if (liveNeighborCount <= 3) {
+        else if (liveNeighborCount <= 3) { //Rule for setting space to alive for next generation
           world.SetNext({i, j}, true);
         }
-        else {
+        else { //Rule for killing space due to overpopulation
           world.SetNext({i, j}, false);
         }
       }
-      else {
-        if (liveNeighborCount == 2) {
+      else { //Rules for dead particles
+        if (liveNeighborCount == 2) { //Rule for birthing new particle
           world.SetNext({i, j}, true);
         }
       }
@@ -58,5 +59,5 @@ int HexagonGameOfLife::CountNeighbors(World& world, Point2D point) {
     }
   }
 
-  return count;
+  return count; //Returns total live neighbor count
  }
