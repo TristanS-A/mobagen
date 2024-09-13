@@ -15,7 +15,7 @@ void HexagonGameOfLife::Step(World& world) {
         if (liveNeighborCount < 2) { //Rule for killing space due to underpopulation
           world.SetNext({i, j}, false);
         }
-        else if (liveNeighborCount <= 3) { //Rule for setting space to alive for next generation
+        else if (liveNeighborCount == 2) { //Rule for setting space to alive for next generation
           world.SetNext({i, j}, true);
         }
         else { //Rule for killing space due to overpopulation
@@ -52,7 +52,7 @@ int HexagonGameOfLife::CountNeighbors(World& world, Point2D point) {
   //Calculates live neighbors on sides
   start = point.x - 1;
   for (int i = start; i < start + 3; i++) {
-    if (i != point.x) {
+    if (i != point.x) { //Excludes the current point
       if (world.Get({i, point.y})) {
         count++;
       }
