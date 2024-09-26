@@ -6,8 +6,28 @@ bool RecursiveBacktrackerExample::Step(World* w) {
   if (stack.empty() && visited.empty()) {
     stack.push_back(randomStartPoint(w));
   }
+  else if (!stack.empty()) {
+    Point2D point = stack.back();
+    Node node = w->GetNode(point);
+    std::vector<Point2D> neighbors = getVisitables(w, point);
 
-  
+    if (neighbors.size() > 0) {
+
+      //Should pick only one neighbor to add to the stack
+      //Change color of visited
+      //Break walls
+
+      /*for (Point2D p : neighbors) {
+        if (visited.find(p) == visited.end()) {
+          stack.push_back(p);
+        }
+      }*/
+
+    }
+    else {
+      stack.pop_back();
+    }
+  }
 
   return false;
 }
