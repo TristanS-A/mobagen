@@ -19,6 +19,7 @@ public:
   bool Step(World* world) override;
   void Clear(World* world) override;
   int getRandomNumber();
+  bool visitedIsEmpty();
 };
 
 #endif  // RECURSIVEBACKTRACKER_H
