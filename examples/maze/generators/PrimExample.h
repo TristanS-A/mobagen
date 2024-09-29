@@ -18,6 +18,7 @@ public:
   std::string GetName() override { return "Prim"; };
   bool Step(World* world) override;
   void Clear(World* world) override;
+  int getRandomNumber();
 };
 
 #endif  // MOBAGEN_EXAMPLES_MAZE_GENERATORS_PRIMEXAMPLE_H_
