@@ -25,10 +25,73 @@ std::vector<Point2D> Agent::generatePath(World* w) {
     // for every neighbor set the cameFrom
     // enqueue the neighbors to frontier and frontierset
     // do this up to find a visitable border and break the loop
+
+    Point2D const point = frontier.front(); //Gets the current point from the stack
+    frontier.pop(); //Removes the current point from the stack
+    frontierSet.erase(point); //Removes the current point from the fronteirSet
+
+    int const gridHalfSize = w->getWorldSideSize() / 2;
+    if (point.y == gridHalfSize || point.y == -gridHalfSize || point.x == gridHalfSize || point.x == -gridHalfSize) {
+      borderExit = point;
+      break;
+    }
+
+    visited[point] = true; //Sets the current point to be visited
+    std::vector<Point2D> neighbors = getVisitableNeightbors(w, point, frontierSet, visited); //Gets the neighbors of the current point
+
+    if (!neighbors.empty()) {
+      for (auto const neighbor : neighbors) {
+        cameFrom[neighbor] = point;
+        frontier.push(neighbor);
+        frontierSet.insert(neighbor);
+      }
+    }
   }
 
   // if the border is not infinity, build the path from border to the cat using the camefrom map
   // if there isnt a reachable border, just return empty vector
   // if your vector is filled from the border to the cat, the first element is the catcher move, and the last element is the cat move
-  return vector<Point2D>();
+  vector<Point2D> path;
+  if (borderExit != Point2D::INFINITE) {
+    Point2D current = borderExit;
+    while (current != catPos) {
+      path.push_back(current);
+      current = cameFrom[current];
+    }
+  }
+  return path;
+}
+
+std::vector<Point2D> Agent::getVisitableNeightbors(World* world, Point2D point, unordered_set<Point2D> &queue, std::unordered_map<Point2D, bool> &visited) {
+  int start = point.x - static_cast<int>(point.y % 2 == 0);
+  std::vector<Point2D> visitables;
+
+  //Calculates live neighbors above
+  for (int i = start; i < start + 2; i++) {
+    Point2D const checkPoint = {i, point.y - 1};
+    if (!queue.contains(checkPoint) && !visited.contains(point) && !world->getContent(checkPoint) && world->getCat() != checkPoint) {
+      visitables.push_back(checkPoint);
+    }
+  }
+
+  //Calculates live neighbors below
+  for (int i = start; i < start + 2; i++) {
+    Point2D const checkPoint = {i, point.y + 1};
+    if (!queue.contains(checkPoint) && !visited.contains(point) && !world->getContent(checkPoint) && world->getCat() != checkPoint) {
+      visitables.push_back(checkPoint);
+    }
+  }
+
+  //Calculates live neighbors on sides
+  start = point.x - 1;
+  for (int i = start; i < start + 3; i++) {
+    if (i != point.x) { //Excludes the current point
+      Point2D const checkPoint = {i, point.y};
+      if (!queue.contains(checkPoint) && !visited.contains(point) && !world->getContent(checkPoint) && world->getCat() != checkPoint) {
+        visitables.push_back(checkPoint);
+      }
+    }
+  }
+
+  return visitables; //Returns total live neighbor count
 }
