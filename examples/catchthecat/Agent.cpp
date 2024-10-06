@@ -62,14 +62,14 @@ std::vector<Point2D> Agent::generatePath(World* w) {
   return path;
 }
 
-std::vector<Point2D> Agent::getVisitableNeightbors(World* world, Point2D point, unordered_set<Point2D> &queue, std::unordered_map<Point2D, bool> &visited) {
+std::vector<Point2D> Agent::getVisitableNeightbors(World* world, Point2D point, std::unordered_set<Point2D> &queue, std::unordered_map<Point2D, bool> &visited) {
   int start = point.x - static_cast<int>(point.y % 2 == 0);
   std::vector<Point2D> visitables;
 
   //Calculates live neighbors above
   for (int i = start; i < start + 2; i++) {
     Point2D const checkPoint = {i, point.y - 1};
-    if (!queue.contains(checkPoint) && !visited.contains(point) && !world->getContent(checkPoint) && world->getCat() != checkPoint) {
+    if (!queue.contains(checkPoint) && !visited.contains(checkPoint) && !world->getContent(checkPoint) && world->getCat() != checkPoint) {
       visitables.push_back(checkPoint);
     }
   }
@@ -77,7 +77,7 @@ std::vector<Point2D> Agent::getVisitableNeightbors(World* world, Point2D point, 
   //Calculates live neighbors below
   for (int i = start; i < start + 2; i++) {
     Point2D const checkPoint = {i, point.y + 1};
-    if (!queue.contains(checkPoint) && !visited.contains(point) && !world->getContent(checkPoint) && world->getCat() != checkPoint) {
+    if (!queue.contains(checkPoint) && !visited.contains(checkPoint) && !world->getContent(checkPoint) && world->getCat() != checkPoint) {
       visitables.push_back(checkPoint);
     }
   }
@@ -87,7 +87,7 @@ std::vector<Point2D> Agent::getVisitableNeightbors(World* world, Point2D point, 
   for (int i = start; i < start + 3; i++) {
     if (i != point.x) { //Excludes the current point
       Point2D const checkPoint = {i, point.y};
-      if (!queue.contains(checkPoint) && !visited.contains(point) && !world->getContent(checkPoint) && world->getCat() != checkPoint) {
+      if (!queue.contains(checkPoint) && !visited.contains(checkPoint) && !world->getContent(checkPoint) && world->getCat() != checkPoint) {
         visitables.push_back(checkPoint);
       }
     }
