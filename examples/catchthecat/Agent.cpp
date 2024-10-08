@@ -4,16 +4,20 @@
 #include <queue>
 #include "World.h"
 using namespace std;
+
 std::vector<Point2D> Agent::generatePath(World* w) {
   unordered_map<Point2D, Point2D> cameFrom;  // to build the flowfield and build the path
-  queue<Point2D> frontier;                   // to store next ones to visit
+  priority_queue<AStarNode> frontier;                   // to store next ones to visit
   unordered_set<Point2D> frontierSet;        // OPTIMIZATION to check faster if a point is in the queue
-  unordered_map<Point2D, bool> visited;      // use .at() to get data, if the element dont exist [] will give you wrong results
+  unordered_map<Point2D, bool> visited;      // use .at() to get data, if the element don't exist [] will give you wrong results
 
   // bootstrap state
-  auto catPos = w->getCat();
-  frontier.push(catPos);
-  frontierSet.insert(catPos);
+  AStarNode start = AStarNode(w->getCat());
+  Point2D goal = probobalExit(w, start.point);
+  start.heuristic = start.calculateAndSetHeuristic(goal);
+
+  frontier.push(start);
+  frontierSet.insert(start.point);
   Point2D borderExit = Point2D::INFINITE;  // if at the end of the loop we dont find a border, we have to return random points
 
   while (!frontier.empty()) {
@@ -26,23 +30,26 @@ std::vector<Point2D> Agent::generatePath(World* w) {
     // enqueue the neighbors to frontier and frontierset
     // do this up to find a visitable border and break the loop
 
-    Point2D const point = frontier.front(); //Gets the current point from the stack
+    AStarNode const currNode = frontier.top(); //Gets the current point from the stack
     frontier.pop(); //Removes the current point from the stack
-    frontierSet.erase(point); //Removes the current point from the fronteirSet
+    frontierSet.erase(currNode.point); //Removes the current point from the fronteirSet
 
     int const gridHalfSize = w->getWorldSideSize() / 2;
-    if (point.y == gridHalfSize || point.y == -gridHalfSize || point.x == gridHalfSize || point.x == -gridHalfSize) {
-      borderExit = point;
+    if (currNode.point.y == gridHalfSize || currNode.point.y == -gridHalfSize || currNode.point.x == gridHalfSize || currNode.point.x == -gridHalfSize) {
+      borderExit = currNode.point;
       break;
     }
 
-    visited[point] = true; //Sets the current point to be visited
-    std::vector<Point2D> neighbors = getVisitableNeightbors(w, point, frontierSet, visited); //Gets the neighbors of the current point
+    visited[currNode.point] = true; //Sets the current point to be visited
+    std::vector<Point2D> neighbors = getVisitableNeightbors(w, currNode.point, frontierSet, visited); //Gets the neighbors of the current point
 
     if (!neighbors.empty()) {
-      for (auto const neighbor : neighbors) {
-        cameFrom[neighbor] = point;
-        frontier.push(neighbor);
+      for (Point2D const neighbor : neighbors) {
+        cameFrom[neighbor] = currNode.point;
+        AStarNode newNeighborNode = AStarNode(neighbor);
+        newNeighborNode.weight = currNode.weight + 1;
+        newNeighborNode.heuristic = newNeighborNode.calculateAndSetHeuristic(goal);
+        frontier.push(newNeighborNode);
         frontierSet.insert(neighbor);
       }
     }
@@ -54,12 +61,31 @@ std::vector<Point2D> Agent::generatePath(World* w) {
   vector<Point2D> path;
   if (borderExit != Point2D::INFINITE) {
     Point2D current = borderExit;
-    while (current != catPos) {
+    while (current != start.point) {
       path.push_back(current);
       current = cameFrom[current];
     }
   }
   return path;
+}
+
+Point2D Agent::probobalExit(World* w, Point2D p) {
+  int const gridHalfSize = w->getWorldSideSize() / 2;
+  if (p.x > p.y && p.x > 0) {
+    return {gridHalfSize, p.y};
+  }
+  else if (p.x < p.y && p.y > 0) {
+    return {p.x, gridHalfSize};
+  }
+  else if (p.x < p.y && p.x < 0) {
+    return {-gridHalfSize, p.y};
+  }
+  else if (p.x > p.y && p.y < 0) {
+    return {p.x, -gridHalfSize};
+  }
+
+
+  return {0, 0};
 }
 
 std::vector<Point2D> Agent::getVisitableNeightbors(World* world, Point2D point, std::unordered_set<Point2D> &queue, std::unordered_map<Point2D, bool> &visited) {
