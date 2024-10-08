@@ -29,7 +29,8 @@ public:
 
   virtual Point2D Move(World*) = 0;
 
-  std::vector<Point2D> generatePath(World* w);
+  std::vector<Point2D> generateBFSPath(World* w);
+  std::vector<Point2D> generateAStarPath(World* w);
   std::vector<Point2D> getVisitableNeightbors(World* world, Point2D point, std::unordered_set<Point2D> &queue, std::unordered_map<Point2D, bool> &visited);
   Point2D probobalExit(World* w, Point2D p);
 };
