@@ -13,6 +13,8 @@ Point2D Catcher::Move(World* world) {
   for (;;) {
     Point2D p = {Random::Range(-side, side), Random::Range(-side, side)};
     auto cat = world->getCat();
+    std::cout << p.x << " " << p.y << std::endl;
+    std::cout << cat.x << " " << cat.y << std::endl;
     if (cat.x != p.x && cat.y != p.y && !world->getContent(p)) return p;
   }
 }

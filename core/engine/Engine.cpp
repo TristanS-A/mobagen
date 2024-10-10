@@ -98,7 +98,7 @@ void Engine::Tick() {
   auto gos = gameObjects;                                       // clone to prevent out of bounds access
   for (auto go : gameObjects) go->OnGui(window->imGuiContext);  // todo: find a better way to pass imgui context
 
-  for (auto go : scriptableObjects) go->OnGui(window->imGuiContext);
+  //for (auto go : scriptableObjects) go->OnGui(window->imGuiContext);
 
   // Rendering
   ImGui::Render();

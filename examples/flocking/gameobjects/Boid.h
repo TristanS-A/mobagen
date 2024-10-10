@@ -5,6 +5,8 @@
 #include "Pacticle.h"
 #include "Polygon.h"
 
+#include <iostream>
+
 class World;
 
 class Boid : public Particle {
@@ -34,6 +36,7 @@ public:
 
     // Clone the rules in newRules in the boid rules.
     for (auto& rule : newRules) {
+      std::cout << rule->weight << std::endl;
       rules.push_back(rule->clone());
     }
   }
