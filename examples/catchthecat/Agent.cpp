@@ -50,7 +50,7 @@ std::vector<Point2D> Agent::generateBFSPath(World* w) {
   }
 
   // if the border is not infinity, build the path from border to the cat using the camefrom map
-  // if there isnt a reachable border, just return empty vector
+  // if there isn't a reachable border, just return empty vector
   // if your vector is filled from the border to the cat, the first element is the catcher move, and the last element is the cat move
   vector<Point2D> path;
   if (borderExit != Point2D::INFINITE) {
@@ -71,12 +71,12 @@ std::vector<Point2D> Agent::generateAStarPath(World* w) {
 
   // bootstrap state
   AStarNode start = AStarNode(w->getCat());
-  Point2D goal = probobalExit(w, start.point);
-  start.heuristic = start.calculateAndSetHeuristic(goal);
+  //Point2D goal = probobalExit(w, start.point);
+  start.heuristic = start.calculateHeuristic(start.point, w->getWorldSideSize() / 2);
 
   frontier.push(start);
   frontierSet.insert(start.point);
-  Point2D borderExit = Point2D::INFINITE;  // if at the end of the loop we dont find a border, we have to return random points
+  Point2D borderExit = Point2D::INFINITE;  // if at the end of the loop we don't find a border, we have to return random points
 
   while (!frontier.empty()) {
     // get the current from frontier
@@ -106,7 +106,7 @@ std::vector<Point2D> Agent::generateAStarPath(World* w) {
         cameFrom[neighbor] = currNode.point;
         AStarNode newNeighborNode = AStarNode(neighbor);
         newNeighborNode.weight = currNode.weight + 1;
-        newNeighborNode.heuristic = newNeighborNode.calculateAndSetHeuristic(goal);
+        newNeighborNode.heuristic = newNeighborNode.calculateHeuristic(start.point, w->getWorldSideSize() / 2);
         frontier.push(newNeighborNode);
         frontierSet.insert(neighbor);
       }

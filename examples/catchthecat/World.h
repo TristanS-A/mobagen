@@ -20,6 +20,7 @@ private:
   int64_t moveDuration = 0;
   bool catWon = false;
   bool catcherWon = false;
+  bool usingBFS = false;
 
   Cat* cat;
   Catcher* catcher;
@@ -95,6 +96,9 @@ public:
 
   // returns true if cat wins on the given space
   bool catWinsOnSpace(Point2D point);
+
+  //Gets if using BFS for path generation
+  bool getUsingBFS();
 
   static std::vector<Point2D> neighbors(Point2D point) {
     std::vector<Point2D> n;

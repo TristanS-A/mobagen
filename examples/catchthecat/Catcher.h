@@ -7,6 +7,7 @@ class Catcher : public Agent {
 public:
   explicit Catcher() : Agent(){};
   Point2D Move(World*) override;
+  std::vector<Point2D> getVisitableNeightbors(World* world);
 };
 
 #endif  // CATCHER_H
