@@ -3,7 +3,7 @@
 
 Point2D Catcher::Move(World* world) {
   auto side = world->getWorldSideSize() / 2;
-  std::vector<Point2D> path = world->getUsingBFS() ? generateAStarPath(world) : generateBFSPath(world); //Selects current path algorithm
+  std::vector<Point2D> path = world->getUsingBFS() ? generateBFSPath(world) : generateAStarPath(world); //Selects current path algorithm
   if (!path.empty()) { //If path is not empty, return the first element in the path
     return path[0];
   }
@@ -46,5 +46,5 @@ std::vector<Point2D> Catcher::getVisitableNeightbors(World* world) {
     }
   }
 
-  return visitables; //Returns total live neighbor count
+  return visitables; //Returns neighbors found
 }

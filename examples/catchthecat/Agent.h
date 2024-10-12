@@ -20,9 +20,11 @@ public:
       return (weight + heuristic) > (rhs.weight + rhs.heuristic);
     }
 
-    int calculateHeuristic(const Point2D& other, int halfSideSize) const {
-      //return abs(point.x - other.x) + abs(point.y - other.y); //Manhattan
+    int calculateManhattanHeuristic(const Point2D& other) const {
+      return abs(point.x - other.x) + abs(point.y - other.y); //Manhattan
+    }
 
+    int calculateClosestSideHeuristic(const Point2D& other, int halfSideSize) const {
       //The other way of calculating heuristic based on finding the closest side
       if (other.x - other.y > 0 && other.x + other.y > 0) { //Tests if right side is closest
         return halfSideSize - other.x; //returns distance from right side

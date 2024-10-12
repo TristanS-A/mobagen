@@ -21,6 +21,7 @@ private:
   bool catWon = false;
   bool catcherWon = false;
   bool usingBFS = false;
+  bool usingManhattan = false;
 
   Cat* cat;
   Catcher* catcher;
@@ -99,6 +100,9 @@ public:
 
   //Gets if using BFS for path generation
   bool getUsingBFS();
+
+  //Gets if using manhattan heuristic or other side direction heuristic
+  bool getUsingManhattan();
 
   static std::vector<Point2D> neighbors(Point2D point) {
     std::vector<Point2D> n;

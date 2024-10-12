@@ -155,10 +155,16 @@ void World::OnGui(ImGuiContext* context) {
   if (ImGui::Button("Pause")) {
     isSimulating = false;
   }
-  ImGui::SameLine();
-  const std::string text = usingBFS ? "Using BFS" : "Using A*"; //Setting text
+  std::string text = usingBFS ? "Using BFS" : "Using A*"; //Setting text
   if (ImGui::Button(text.c_str())) { //ImGUI to set usingBFS
     usingBFS = !usingBFS;
+  }
+
+  if (!usingBFS) {
+    text = usingManhattan ? "Using Manhattan Heuristic" : "Using Closest Edge Heuristic"; //Setting text
+    if (ImGui::Button(text.c_str())) { //ImGUI to set usingBFS
+      usingManhattan = !usingManhattan;
+    }
   }
   ImGui::End();
 
@@ -232,6 +238,7 @@ bool World::catcherWinVerification() {
          && getContent(SE(catPosition)) && getContent(SW(catPosition));
 }
 bool World::getUsingBFS() { return usingBFS; }
+bool World::getUsingManhattan() { return usingManhattan; }
 
 bool World::catCanMoveToPosition(Point2D p) const { return isNeighbor(catPosition, p) && !getContent(p); }
 bool World::catcherCanMoveToPosition(Point2D p) const {
